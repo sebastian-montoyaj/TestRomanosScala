@@ -44,6 +44,44 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     }
   }
 
+  def hello() : String = {
+    return "Hola mundo"
+  }
+
+  val magicNumber = "3428"
+
+  def codeBreaker(num: String) : String = {
+    var i = 0
+    var aux : String = ""
+    var resulX  = ""
+    var resul_  = ""
+    var resul   = "" 
+      for (i <- 0 to 3)
+      {
+        aux = num(i).toString
+
+        if (!magicNumber.contains(aux))
+        {
+          resul += " ";
+        }
+        else
+        {
+          // lo contiene  en la posicion correcta
+          if (i == magicNumber.indexOf(aux))
+          {
+            resulX += "X";
+          }else{ // en otra posicion
+            resul_ += "_";
+          }
+        }
+
+      }
+      
+      return resulX + resul_ + resul 
+  }
+
+
+
   def index() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
