@@ -3,6 +3,7 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import play.api.libs.json._
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -48,7 +49,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     return "Hola mundo"
   }
 
-  val magicNumber = "3428"
+  var magicNumber = "3428"
 
   def codeBreaker(num: String) : String = {
     var i = 0
@@ -80,6 +81,16 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       return resulX + resul_ + resul 
   }
 
+  def changeSecretCode(num: String) = Action {
+    magicNumber = num
+    Ok("Changed!")
+  }
+
+  def codeBreakerService(num: String) = Action {
+    val resul = codeBreaker(num)
+     val jsonAux = Json.obj("status" -> "Ok", "message" -> s"Resultado es: ${resul}")
+    Ok(jsonAux)
+  }
 
 
   def index() = Action { implicit request: Request[AnyContent] =>

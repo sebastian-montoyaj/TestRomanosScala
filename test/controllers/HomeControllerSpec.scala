@@ -6,6 +6,8 @@ import play.api.test._
 import play.api.test.Helpers._
 import scala.concurrent.Future
 import play.api.mvc._
+import play.api.Application
+import controllers._
 
 /**
  * Add your spec here.
@@ -93,6 +95,25 @@ class HomeControllerSpec extends PlaySpec with Results {
       result mustBe "XXX "
     }
   }
+
+
+  "HomeController GET" should {
+
+     
+
+    "Servicio exitoso" in {
+      val controller = new HomeController(stubControllerComponents())
+      controller.changeSecretCode("1234").apply(FakeRequest(GET, "/changeSecret/1234"))
+      val result = controller.codeBreakerService("1234").apply(FakeRequest(GET, "/codebreaker/1234"))
+
+      status(result) mustBe OK
+      contentType(result) mustBe Some("application/json")
+      contentAsString(result) must include ("""{"status":"Ok","message":"Resultado es: XXXX"}""")
+      
+    }
+
+  }
+
 
 /*
   "HomeController GET" should {
