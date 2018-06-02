@@ -226,57 +226,141 @@ class HomeControllerSpec extends PlaySpec with Results {
   
   //------ Desde aqui comienzan las pruebas del CodeBreaker
   
+  "Prueba para revisar el casteador de numeros -> Falla" should {
+    "should be valid" in {
+      val result = controller.toInt("97x8")
+      result mustBe None
+    }
+  }
   
+  "Prueba para revisar el casteador de numeros -> Exito" should {
+    "should be valid" in {
+      val result = controller.toInt("123")
+      result mustBe Some(123)
+    }
+  }
+  
+  "Prueba para revisar el validador de numeros - Caso 1: Menor longitud" should {
+    "should be valid" in {
+      val result = controller.validateNumber("978")
+      result mustBe false
+    }
+  }
+  
+  "Prueba para revisar el validador de numeros - Caso 2: Mayor longitud" should {
+    "should be valid" in {
+      val result = controller.validateNumber("97845")
+      result mustBe false
+    }
+  }
+  
+  "Prueba para revisar el validador de numeros - Caso 3: Caracteres no validos" should {
+    "should be valid" in {
+      val result = controller.validateNumber("45w8")
+      result mustBe false
+    }
+  }
+  
+  "Prueba para revisar el validador de numeros - Caso 4: Digitos repetidos" should {
+    "should be valid" in {
+      val result = controller.validateNumber("4584")
+      result mustBe false
+    }
+  }
+  
+  "Prueba para revisar el validador de numeros - Caso 5: Exito" should {
+    "should be valid" in {
+      val result = controller.validateNumber("1234")
+      result mustBe true
+    }
+  }
+  
+  "Prueba para revisar el cambiador del numero magico - Caso 1: Falla" should {
+    "should be valid" in {
+      val result = controller.changeSecretCode("456a")
+      result mustBe "Number doesn't have a correct format!\nMust be a 4-digit number with no digits repeated"
+    }
+  }
+  
+  "Prueba para revisar el cambiador del numero magico - Caso 1: Exito" should {
+    "should be valid" in {
+      val result = controller.changeSecretCode("1489")
+      result mustBe "Changed!"
+    }
+  }
   
   "Probando que ninguno este" should {
     "should be valid" in {
-      val result = controller.codeBreaker("1111")
+      controller.changeSecretCode("7859")
+      val result = controller.codeBreaker("1234")
       result mustBe "    "
     }
   }
 
   "Probando que los contenga pero todos en desorden" should {
     "should be valid" in {
+      controller.changeSecretCode("4321")
       val result = controller.codeBreaker("1234")
-      result mustBe "___ "
+      result mustBe "____"
     }
   }
-
-  "Probando que no contenga ninguno" should {
+  
+  "Probando que los tenga todos y en orden" should {
     "should be valid" in {
+      controller.changeSecretCode("3428")
+      val result = controller.codeBreaker("3428")
+      result mustBe "XXXX"
+    }
+  }
+  
+  "Probando que tiene 3 bien y en orden" should {
+    "should be valid" in {
+      controller.changeSecretCode("3428")
+      val result = controller.codeBreaker("3128")
+      result mustBe "XXX "
+    }
+  }
+  
+  "Probando que tiene 3 bien y en desorden" should {
+    "should be valid" in {
+      controller.changeSecretCode("3428")
       val result = controller.codeBreaker("1834")
       result mustBe "___ "
     }
   }
-
-  "Probando que contenga tres en la posicion correcta y uno no exista" should {
+  
+  "Probando que tiene 2 bien y en orden" should {
     "should be valid" in {
+      controller.changeSecretCode("5276")
+      val result = controller.codeBreaker("1236")
+      result mustBe "XX  "
+    }
+  }
+  
+  "Probando que tiene 2 bien y en desorden" should {
+    "should be valid" in {
+      controller.changeSecretCode("5672")
       val result = controller.codeBreaker("1236")
       result mustBe "__  "
     }
   }
 
-  "Probando que contenga cuatro en la posición correcta" should {
+  "Probando que tiene 1 bien y en orden" should {
     "should be valid" in {
-      val result = controller.codeBreaker("3428")
-      result mustBe "XXXX"
+      controller.changeSecretCode("5278")
+      val result = controller.codeBreaker("1236")
+      result mustBe "X   "
     }
   }
-
-   "Probando que contenga la cuatro en desorden" should {
+  
+  "Probando que tiene 1 bien y en desorden" should {
     "should be valid" in {
-      val result = controller.codeBreaker("4283")
-      result mustBe "____"
+      controller.changeSecretCode("5872")
+      val result = controller.codeBreaker("1236")
+      result mustBe "_   "
     }
   }
-
-    "Probando que tenga tres bien y uno incorrecto" should {
-    "should be valid" in {
-      val result = controller.codeBreaker("3128")
-      result mustBe "XXX "
-    }
-  }
-
+  
   // Pruebas para ver que los servicios responden de manera exitosa
   "HomeController" should {
     "Servicio CodeBreaker exitoso" in {
@@ -286,6 +370,15 @@ class HomeControllerSpec extends PlaySpec with Results {
       status(result) mustBe OK
       contentType(result) mustBe Some("application/json")
       contentAsString(result) must include ("""{"status":"Ok","message":"Resultado es: XXXX"}""")
+      
+    }
+    
+    "Servicio CodeBreaker fallido" in {
+      val result = controller.codeBreakerService("187q").apply(FakeRequest(GET, "/codebreaker/187q"))
+
+      status(result) mustBe OK
+      contentType(result) mustBe Some("application/json")
+      contentAsString(result) must include ("""{"status":"Error","message":"Number doesn't have a correct format!\nMust be a 4-digit number with no digits repeated"}""")
       
     }
   }
