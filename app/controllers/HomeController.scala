@@ -20,7 +20,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
       case 6 => "VI" 
       case 7 => "VII" 
       case 8 => "VIII" 
-      case 9 => "lX" 
+      case 9 => "IX" 
       case 10 => "X" 
       case aux if (aux < 20) => ("X" + decToRoman(num - 10)) 
       case 20 => "XX" 
