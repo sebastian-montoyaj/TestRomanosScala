@@ -9,16 +9,12 @@ import play.api.mvc._
 import play.api.Application
 import controllers._
 
-/**
- * Add your spec here.
- * You can mock out a whole application including requests, plugins etc.
- *
- * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
- */
+// Clase para realizar las pruebas
 class HomeControllerSpec extends PlaySpec with Results {
-
+  
+  // Variable comun a las pruebas
   val controller = new HomeController(stubControllerComponents())
-
+  
   "Convirtiendo el 100 a romano" should {
     "should be valid" in {
       val result = controller.decToRoman(100)
@@ -40,13 +36,17 @@ class HomeControllerSpec extends PlaySpec with Results {
     }
   }
 
-"Saludando" should {
+  "Saludando" should {
     "should be valid" in {
       val result = controller.hello
       result mustBe "Hola mundo"
     }
   }
-
+  
+  //------ Desde aqui comienzan las pruebas del CodeBreaker
+  
+  
+  
   "Probando que ninguno este" should {
     "should be valid" in {
       val result = controller.codeBreaker("1111")
@@ -96,14 +96,11 @@ class HomeControllerSpec extends PlaySpec with Results {
     }
   }
 
-
-  "HomeController GET" should {
-
-     
-
-    "Servicio exitoso" in {
+  // Prueba para ver que los servicios responden de manera exitosa
+  "HomeController" should {
+    " - Servicio exitoso" in {
       val controller = new HomeController(stubControllerComponents())
-      controller.changeSecretCode("1234").apply(FakeRequest(GET, "/changeSecret/1234"))
+      controller.changeSecretCodeService("1234").apply(FakeRequest(GET, "/changeSecret/1234"))
       val result = controller.codeBreakerService("1234").apply(FakeRequest(GET, "/codebreaker/1234"))
 
       status(result) mustBe OK
@@ -111,40 +108,8 @@ class HomeControllerSpec extends PlaySpec with Results {
       contentAsString(result) must include ("""{"status":"Ok","message":"Resultado es: XXXX"}""")
       
     }
-
   }
-
-
-/*
-  "HomeController GET" should {
-
-    "render the index page from a new instance of controller" in {
-      val controller = new HomeController(stubControllerComponents())
-      val home = controller.index().apply(FakeRequest(GET, "/"))
-
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
-    }
-
-    "render the index page from the application" in {
-      val controller = inject[HomeController]
-      val home = controller.index().apply(FakeRequest(GET, "/"))
-
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
-    }
-
-    "render the index page from the router" in {
-      val request = FakeRequest(GET, "/")
-      val home = route(app, request).get
-
-      status(home) mustBe OK
-      contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Welcome to Play")
-    }
-  }
-*/
+  
+  //------ Aqui terminan las pruebas del CodeBreaker
 
 }

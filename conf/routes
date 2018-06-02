@@ -11,4 +11,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 # Rutas para el servicio codebreaker
 GET     /codebreaker/:number               controllers.HomeController.codeBreakerService(number: String)
-GET     /changeSecret/:number              controllers.HomeController.changeSecretCode(number: String)
+GET     /changeSecret/:number              controllers.HomeController.changeSecretCodeService(number: String)
