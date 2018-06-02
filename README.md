@@ -1,1 +1,3 @@
 [ ![Codeship Status for sebastian-montoyaj/TestRomanosScala](https://app.codeship.com/projects/b6d3eb80-3831-0136-e49c-3e0052f26283/status?branch=master)](https://app.codeship.com/projects/289792)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/de865bfc12e0445aa595fe9b434ea701)](https://www.codacy.com/app/sebastian-montoyaj/TestRomanosScala?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sebastian-montoyaj/TestRomanosScala&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/de865bfc12e0445aa595fe9b434ea701)](https://www.codacy.com/app/sebastian-montoyaj/TestRomanosScala?utm_source=github.com&utm_medium=referral&utm_content=sebastian-montoyaj/TestRomanosScala&utm_campaign=Badge_Coverage)
